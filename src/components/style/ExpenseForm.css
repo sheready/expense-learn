@@ -1,0 +1,16 @@
+#expense-form{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 2%;
+    border: 1px solid black;
+    padding: 1%;
+
+}
+
+#form-button{
+   margin-left: 40%;
+}
+
+#expense-header{
+    text-align: center;
+}
