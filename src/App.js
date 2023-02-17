@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
-import './App.css';
-import Header from './components/Header';
-import ExpenseForm from './components/ExpenseForm';
-import ExpenseList from './components/ExpenseList';
+import React, {useState, useEffect} from "react";
+import "./App.css";
+import Header from "./components/Header";
+import ExpenseForm from "./components/ExpenseForm";
+import ExpenseList from "./components/ExpenseList";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+
 
 const initial_expenses = [
   {
@@ -33,17 +36,45 @@ const initial_expenses = [
 
 function App() {
   const[expenses, setExpenses] = useState(initial_expenses);
+  const[isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const expenseHandler = (expense) => {
+  const expenseHandler = (newExpenseItem) => {
     setExpenses((prevExpenses) => {
-      return [expense, ...prevExpenses];
+      return [newExpenseItem, ...prevExpenses];
     })
   }
  
+  useEffect(() => {
+    const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn')
+
+    if(storedUserLoggedInInformation === '1'){
+      setIsLoggedIn(true);
+    }
+    console.log(true)
+   
+  },[])
+
+  const loginHandler = (email,password) => {
+    //ideally this is where you pass a function that checks 
+    //authentication & authorization via backend
+    localStorage.setItem('isLoggedIn' , '1');
+    setIsLoggedIn(true)
+  }
+
+  const logoutHandler = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false)
+  }
 
   return (
     <>
-    <Header/> 
+    <Header/>
+    <main>
+    {!isLoggedIn && <Login onLogin={loginHandler} />}
+    {isLoggedIn && <Logout onLogout={logoutHandler} />}
+    
+    </main> 
+    
     <ExpenseForm onNewExpense={expenseHandler} />
     <ExpenseList data={expenses}/>
  
